@@ -1,100 +1,159 @@
 import 'package:flutter/material.dart';
 
-
-class Try extends StatefulWidget {
-  const Try({ Key? key }) : super(key: key);
+class MyForm extends StatefulWidget {
+  const MyForm({Key? key}) : super(key: key);
 
   @override
-  _TryState createState() => _TryState();
+  _MyFormState createState() => _MyFormState();
 }
 
-class _TryState extends State<Try> {
-  final mycontroller = TextEditingController();
-  TextEditingController num1=new TextEditingController();
-  TextEditingController num2= new TextEditingController();
-  String sum = "";
+class _MyFormState extends State<MyForm> {
+  final _firstController = TextEditingController();
+  final _secondController = TextEditingController();
+  final _thirdcontroller = TextEditingController();
 
-  bool _validate = false;
-  @override
-  void dispose() {
-    mycontroller.dispose();
-    super.dispose();
+  String result = '';
 
+  String? myvalidation(value) {
+    if (value == null || value.isEmpty) {
+      return "Field is empty";
+    }
+    return null;
   }
+
   @override
-
-
- Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children:[TextField(
-              
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.number,
-              // maxLength: 4,
-              // maxLines: 2,
-              // obscureText: true,
-              // obscuringCharacter: "#",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              decoration: InputDecoration(
-                  labelText: "First number",
-                  hintText: "Enter you First number",
-                  
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30))),
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Form Example'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: SingleChildScrollView(
+          child: Form(
+            child: Column(
+              children: [
+                const Text(
+                  'Finding Simple Interest',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 30),
+                TextFormField(
+                  validator: myvalidation,
+                  controller: _firstController,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.green,
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    labelText: 'Principal',
+                    hintText: '0',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _firstController.clear();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  validator: myvalidation,
+                  controller: _secondController,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.green,
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    labelText: 'Rate',
+                    hintText: '0',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _secondController.clear();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Field is empty";
+                    }
+                    return null;
+                  },
+                  controller: _thirdcontroller,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.red,
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    labelText: 'Time',
+                    hintText: '0',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        _thirdcontroller.clear();
+                      },
+                      icon: const Icon(Icons.clear),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                  ),
+                  onPressed: () {
+                    //if (_formkey.currentState!.validate()) {
+                      setState(() {
+                        result = ((int.parse(_firstController.text) *
+                                int.parse(_secondController.text) *
+                                int.parse(_thirdcontroller.text) / 100)
+                            .toString());
+                      });
+                    },
+                  //},
+                  child: const Text('Simple Interest'),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        width: 150,
+                        height: 80,
+                        color: Colors.blue,
+                        child: const Center(
+                          child: Text(
+                            'Simple Interest',
+                            style: TextStyle(fontSize: 30, color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        width: 150,
+                        height: 80,
+                        color: Colors.white,
+                        child: Center(
+                          child: Text(
+                            result,
+                            style: TextStyle(fontSize: 30, color: Colors.black),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
-            const SizedBox(height: 30),
-            TextField(
-              
-              textInputAction: TextInputAction.done,
-              keyboardType: TextInputType.number,
-              // maxLength: 4,
-              // maxLines: 2,
-              // obscureText: true,
-              // obscuringCharacter: "#",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              decoration: InputDecoration(
-                  labelText: "second number",
-                  hintText: "Enter you Second number",
-                  
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30))),
-            ),
-            const SizedBox(height: 30),
-             ElevatedButton(style: TextButton.styleFrom(
-                textStyle: TextStyle(fontSize: 25),
-                padding:EdgeInsets.all(20),
-                backgroundColor: Colors.green,
-                primary:Colors.white,
-                elevation: 20,
-                shadowColor: Colors.lightGreenAccent,
-                minimumSize: const Size(100, 50),
-                maximumSize: const Size(200, 80),
-                side: BorderSide(color:Colors.white,width: 3),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(52))
-              ),onPressed: () {
-
-
-                
-              }, child: const Text('add')),
-              const SizedBox(height: 30),
-              Row(
-                children: [
-                  Text("Result"),
-                  Text("${num}"),
-                  
-                ],
-                
-
-              )
-              
-            
-            ] 
           ),
-          
         ),
       ),
     );
